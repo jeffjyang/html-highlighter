@@ -3,77 +3,58 @@ import java.util.List;
 
 public class HtmlParser {
    
-    
-    public static List<HtmlTag> tokenize (StringBuffer buf) {
-	List<HtmlTag> tags = new ArrayList<>();
+    public static List<HtmlElement> tokenize (StringBuffer buf) {
+	List<HtmlElement> htmlElements = new ArrayList<>();
+	
 	while (true) {
-	    HtmlTag tag = nextTag(buf);
-	    if (tag == null) {
+	    HtmlElement element = nextTag(buf);
+	    if (element == null) {
 		break;
 	    } else {
-		tags.add(tag);
-		
+		htmlElements.add(element);
 	    }
-	    
 	}
 	
-	return tags;
-	
+	return htmlElements;
 	
     }
     
-    private static HtmlTag nextTag (StringBuffer buffer) {
+    private static HtmlElement nextTag (StringBuffer buffer) {
 	int indexStartTag = buffer.indexOf("<"); 
 	int indexEndTag = buffer.indexOf(">");
 
-	boolean isOpenTag;
-	boolean isSelfClosing;
-	String element;
-	String text;
-	
+	// this is an html tag
 	if (indexStartTag == 0 && indexStartTag < indexEndTag) {
-	    // if this is a closing tag 
+	    boolean isOpenTag;
+	    String element;
+		
+	    // parse element 
 	    if (buffer.charAt(1) == '/') {
+		// if this is a closing tag
+		// TODO is this even possible???
 		element = buffer.substring(2, indexEndTag);
 		isOpenTag = false;
 	    } else {
 		element = buffer.substring(1, indexEndTag);
 		isOpenTag = true;
 	    }
-	    
-	    
-	    
+	    // delete the first tag 
+	    buffer.delete(indexStartTag, indexEndTag + 1);
+    		
+	    return new HtmlElement(element, isOpenTag);
+
 	} else {
-	    return null;
+	    // we know that this is not an html tag and instead is text 
+	    
+	    String text = buffer.substring(0, indexStartTag);
+	    
+	    buffer.delete(0, indexStartTag);
+	    
+	    return new HtmlElement(text);
 	}
-	
-	// delete the first tag 
-	buffer.delete(indexStartTag, indexEndTag + 1);
 
-	
-	
-	int indexNextTag = buffer.indexOf("<");
-	text = buffer.substring(0, indexNextTag);
-
-	buffer.delete(0, indexNextTag);
-	
-	
-	isSelfClosing = isSelfClosingTag(element);
-	
-	
-	return new HtmlTag(element, text, isOpenTag, isSelfClosing);
-
-	
     }
     
-    
-    
-
-
-    
-    private static boolean isSelfClosingTag(String element) {
-	return false; // TODO 
-    }
     
     
     
