@@ -31,19 +31,38 @@ public class HtmlHighlighter {
 		    toApply.push(prevColorTag);
 		} 
 	    } else if (htmlTag.isOpenTag()) {
-		
+		ColorTag colorTag = new ColorTag(startIndex);
+		htmlStack.push(htmlTag);
+		colorStack.push(colorTag);
+		toApply.add(colorTag);
 	    } else {
-		
+		// closing tag matches most recent open tag
+		if (htmlStack.peek().matches(htmlTag)) {
+		    // remove the stuff associated with this tag from the stack
+		    htmlStack.pop();
+		    colorStack.pop();
+		    
+		    if (!colorStack.isEmpty()) {
+			ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex);
+			toApply.push(prevColorTag);
+			// DRY
+		    }
+		        
+		} else {
+		    // throw err 
+		    
+		}	
 	    }
-	    
-
-	    
-	    htmlStack.push(htmlTag);
-	    
+	    index = index + endIndex;    
 	}
 	
 	
 	
+	while (!toApply.isEmpty()) {
+	    htmlSequence.insert(toApply.peek().getIndex(), toApply.pop().toString());
+	}
+	
+
 	return htmlSequence.toString();
     }
     
