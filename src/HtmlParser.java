@@ -3,23 +3,23 @@ import java.util.List;
 
 public class HtmlParser {
    
-    public static List<HtmlElement> tokenize (StringBuffer buf) {
-	List<HtmlElement> htmlElements = new ArrayList<>();
+    public static List<HtmlTag> tokenize (StringBuffer buf) {
+	List<HtmlTag> htmlTags = new ArrayList<>();
 	
 	while (true) {
-	    HtmlElement element = nextTag(buf);
+	    HtmlTag element = nextTag(buf);
 	    if (element == null) {
 		break;
 	    } else {
-		htmlElements.add(element);
+		htmlTags.add(element);
 	    }
 	}
 	
-	return htmlElements;
+	return htmlTags;
 	
     }
     
-    private static HtmlElement nextTag (StringBuffer buffer) {
+    private static HtmlTag nextTag (StringBuffer buffer) {
 	int indexStartTag = buffer.indexOf("<"); 
 	int indexEndTag = buffer.indexOf(">");
 
@@ -41,7 +41,7 @@ public class HtmlParser {
 	    // delete the first tag 
 	    buffer.delete(indexStartTag, indexEndTag + 1);
     		
-	    return new HtmlElement(element, isOpenTag);
+	    return new HtmlTag(element, isOpenTag);
 
 	} else {
 	    // we know that this is not an html tag and instead is text 
@@ -50,7 +50,7 @@ public class HtmlParser {
 	    
 	    buffer.delete(0, indexStartTag);
 	    
-	    return new HtmlElement(text);
+	    return new HtmlTag(text);
 	}
 
     }
