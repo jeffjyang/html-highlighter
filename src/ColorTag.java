@@ -27,6 +27,6 @@ public class ColorTag {
     }
     
     public String toString() {
-	return color;
+	return "\\color[" + color + "]";
     }
 }
