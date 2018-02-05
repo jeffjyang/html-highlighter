@@ -27,7 +27,7 @@ public class HtmlHighlighter {
 		ColorTag thisColorTag = new ColorTag(startIndex);
 		toApply.push(thisColorTag);
 		if (!htmlStack.isEmpty()) {
-		    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex);
+		    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
 		    toApply.push(prevColorTag);
 		} 
 	    } else if (htmlTag.isOpenTag()) {
@@ -43,7 +43,7 @@ public class HtmlHighlighter {
 		    colorStack.pop();
 		    
 		    if (!colorStack.isEmpty()) {
-			ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex);
+			ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
 			toApply.push(prevColorTag);
 			// DRY
 		    }
