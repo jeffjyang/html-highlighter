@@ -43,5 +43,11 @@ public class HtmlTag {
     	return selfClosingTags.contains(element);
     }
         
-
+    public boolean matches(HtmlTag other) {
+	if (other.isOpenTag() != isOpenTag) {
+	    return element.equals(element);
+	}
+	return false;
+    }
+    
 }
