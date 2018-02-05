@@ -11,13 +11,19 @@ class HtmlTagTest {
 
     @Test
     void test() {
-	HtmlTag tag = new HtmlTag("<head>");
-	System.out.println(tag.toString());
-	HtmlTag tag2 = new HtmlTag("</head>");
-	System.out.print(tag2.isOpenTag());
-	System.out.println(tag2.toString());
-	HtmlTag tag3 = new HtmlTag("<head>");
-	System.out.println(tag3.toString());
+	HtmlTag headOpen = new HtmlTag("<head>");
+	System.out.println(headOpen.toString());
+	
+	HtmlTag headClose = new HtmlTag("</head>");
+	System.out.println(headClose.toString());
+	System.out.println(headClose.isOpenTag());
+	System.out.println(headClose.matches(headOpen));
+	
+	HtmlTag titleOpen = new HtmlTag("<title>");
+	System.out.println(titleOpen.toString());
+	System.out.println(titleOpen.isOpenTag());
+	
+	
     }
 
 }
