@@ -8,7 +8,7 @@ public class HtmlTag {
     private final boolean isOpenTag;
 
     private static final Set<String> selfClosingTags = new HashSet<>(
-	    Arrays.asList("TODO"));
+	    Arrays.asList("br"));
     
     public HtmlTag (String element, boolean isOpenTag) {
 	this.element = element;

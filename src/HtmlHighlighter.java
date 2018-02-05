@@ -20,8 +20,14 @@ public class HtmlHighlighter {
 	    int startIndex = htmlSequence.indexOf("<", index);
 	    int endIndex = htmlSequence.indexOf(">", startIndex);
 	    
+	    if (startIndex > htmlSequence.length() - 1 || endIndex + 1 > htmlSequence.length() -1) {
+		break;
+	    }
+	    
+//	    System.out.print("startIndex: " + startIndex + " endIndex: " + endIndex);
 	    // TODO check out of bounds
 	    HtmlTag htmlTag = new HtmlTag(htmlSequence.substring(startIndex, endIndex + 1));
+//	    System.out.println("  " + htmlTag);
 	    
 	    if (htmlTag.isSelfClosing()) {
 		ColorTag thisColorTag = new ColorTag(startIndex);
@@ -31,13 +37,20 @@ public class HtmlHighlighter {
 		    toApply.push(prevColorTag);
 		} 
 	    } else if (htmlTag.isOpenTag()) {
+
 		ColorTag colorTag = new ColorTag(startIndex);
 		htmlStack.push(htmlTag);
 		colorStack.push(colorTag);
 		toApply.add(colorTag);
+		
+//		System.out.println("	" + htmlTag);
+//		System.out.println("	" + colorTag);
 	    } else {
 		// closing tag matches most recent open tag
-		if (htmlStack.peek().matches(htmlTag)) {
+		if (htmlStack.isEmpty()) {
+		    System.out.println("err");
+		} else if (htmlStack.peek().matches(htmlTag)) {
+//		    System.out.println("		Closing tag!" + htmlStack.peek());
 		    // remove the stuff associated with this tag from the stack
 		    htmlStack.pop();
 		    colorStack.pop();
@@ -48,12 +61,13 @@ public class HtmlHighlighter {
 			// DRY
 		    }
 		        
-		} else {
-		    // throw err 
-		    
-		}	
+		} 
+		
 	    }
-	    index = index + endIndex;    
+	    //index = index + (endIndex - startIndex) ;
+	    index = endIndex;
+	    
+//	    System.out.println("     index is" + index);
 	}
 	
 	
