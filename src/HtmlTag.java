@@ -28,12 +28,7 @@ public class HtmlTag {
 
     }
     
-        
-    public String toString() {
-    	// TODO verify 
-	return "<" + (isOpenTag ? "" : "/") + element + ">";
-    	
-    }
+
     
     public boolean isOpenTag() {
 	return isOpenTag;
@@ -42,12 +37,34 @@ public class HtmlTag {
     public boolean isSelfClosing() {
     	return selfClosingTags.contains(element);
     }
-        
+    
+    private String getElement() {
+	return element;
+    }
+    
     public boolean matches(HtmlTag other) {
 	if (other.isOpenTag() != isOpenTag) {
-	    return element.equals(element);
+	    return element.equals(other.getElement());
 	}
 	return false;
+    }
+    
+    @Override
+    public String toString() {
+    	// TODO verify 
+	return "<" + (isOpenTag ? "" : "/") + element + ">";
+    	
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+	if (o instanceof HtmlTag) {
+	    HtmlTag other = (HtmlTag) o;
+	    return element.equals(other.element) && isOpenTag == other.isOpenTag;
+	} else {
+	    return false;
+	}
+	
     }
     
 }

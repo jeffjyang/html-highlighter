@@ -26,7 +26,19 @@ public class ColorTag {
 	return index;
     }
     
+    @Override
     public String toString() {
 	return "\\color[" + color + "]";
+    }
+    
+    @Override 
+    public boolean equals(Object o) {
+	if (o instanceof ColorTag) {
+	    ColorTag other = (ColorTag) o;
+	    return color.equals(other.color) && index == other.index;
+	} else {
+	    return false;
+	}
+	
     }
 }

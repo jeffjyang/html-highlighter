@@ -3,7 +3,7 @@ import java.util.Stack;
 public class HtmlHighlighter {
 
 
-    // 
+    
     private HtmlHighlighter () {
 
     }
@@ -26,10 +26,9 @@ public class HtmlHighlighter {
 		break;
 	    }
 
-	    //	    System.out.print("startIndex: " + startIndex + " endIndex: " + endIndex);
 	    // TODO check out of bounds
 	    HtmlTag htmlTag = new HtmlTag(htmlSequence.substring(startIndex, endIndex + 1));
-	    //	    System.out.println("  " + htmlTag);
+
 
 	    if (htmlTag.isSelfClosing()) {
 		ColorTag thisColorTag = new ColorTag(startIndex);
@@ -39,20 +38,15 @@ public class HtmlHighlighter {
 		    toApply.push(prevColorTag);
 		} 
 	    } else if (htmlTag.isOpenTag()) {
-
 		ColorTag colorTag = new ColorTag(startIndex);
 		htmlStack.push(htmlTag);
 		colorStack.push(colorTag);
 		toApply.add(colorTag);
-
-		//		System.out.println("	" + htmlTag);
-		//		System.out.println("	" + colorTag);
 	    } else {
 		// closing tag matches most recent open tag
 		if (htmlStack.isEmpty()) {
 		    System.out.println("err");
 		} else if (htmlStack.peek().matches(htmlTag)) {
-		    //		    System.out.println("		Closing tag!" + htmlStack.peek());
 		    // remove the stuff associated with this tag from the stack
 		    htmlStack.pop();
 		    colorStack.pop();
@@ -121,11 +115,6 @@ public class HtmlHighlighter {
 	return htmlSequence.toString();
 
     }
-
-
-
-
-
 
 
 
