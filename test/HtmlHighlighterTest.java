@@ -24,9 +24,21 @@ class HtmlHighlighterTest {
 		"</body>\n" + 
 		"</html>";
 	
-	HtmlHighlighter highlighter = new HtmlHighlighter();
 	
-	System.out.println(highlighter.highlightHtml(input));
+	System.out.println(HtmlHighlighter.highlightHtml(input));
+	
+	System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
+	
+	String input2 = "<HTML>\n" + 
+		"<HEAD><TITLE>Welcome to Capital One highlighter test</TITLE></HEAD>\n" + 
+		"<BODY>\n" + 
+		"<H1>Welcome to Capital One</H1>\n" + 
+		"<P><A HREF=\"http://tech.capitalone.ca\">Visit Our Blog</A></P>\n" + 
+		"</BODY>\n" + 
+		"</HTML>";
+	
+	
+	System.out.println(HtmlHighlighter.highlightHtml(input2));
 	
     }
 
