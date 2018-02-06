@@ -47,21 +47,29 @@ class HtmlHighlighterTest {
 	
 	String input3 = "<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" + 
 		"<html>\n" + 
-		"  <head>\n" + 
-		"    <title>Turtles are cool</title>\n" + 
-		"    <meta http-equiv=\"Content-Type\" content=\"text/html\">\n" + 
-		"    <link href=\"style.css\" type=\"text/css\" />\n" + 
-		"  </head>\n" + 
+		"<head>\n" + 
+		"<title>Turtles are cool</title>\n" + 
+		"<meta http-equiv=\"Content-Type\" content=\"text/html\">\n" + 
+		"<link href=\"style.css\" type=\"text/css\"/>\n" + 
+		"</head>\n" + 
 		"\n" + 
-		"  <body>\n" + 
-		"    <p>Turtles swim in the <a href=\"http://ocean.com/\">ocean</a>.</p>\n" + 
-		"    <p>Some turtles are over 100 years old.  Here is a picture of a turtle:\n" + 
-		"       <img src=\"images/turtle.jpg\" width=\"100\" height=\"100\">\n" + 
-		"    </p>\n" + 
-		"  </body>\n" + 
+		"<body>\n" + 
+		"<p>Turtles swim in the <a href=\"http://ocean.com/\">ocean</a>.</p>\n" + 
+		"<p>Some turtles are over 100 years old.  Here is a picture of a turtle:\n" + 
+		"<img src=\"images/turtle.jpg\" width=\"100\" height=\"100\">\n" + 
+		"</p>\n" + 
+		"</body>\n" + 
 		"</html>\n" ;
 	
 	System.out.println(HtmlHighlighter.highlightHtml(input3));
+	
+	
+	System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
+
+	
+	String input4 = "";
+	
+	System.out.println(HtmlHighlighter.highlightHtml(input4));
 
 	
 	
