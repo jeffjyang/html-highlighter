@@ -50,10 +50,11 @@ public class HtmlHighlighter {
 		    // remove the stuff associated with this tag from the stack
 		    htmlStack.pop();
 		    colorStack.pop();
-
-		    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
-		    toApply.push(prevColorTag);
-
+		    
+		    if (!htmlStack.isEmpty()) {
+			ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
+		    	toApply.push(prevColorTag);
+		    }
 		    /*
 		    if (!colorStack.isEmpty()) {
 			int nextTagStart = htmlSequence.indexOf("<", endIndex -1);

@@ -6,9 +6,14 @@ public class HtmlTag {
     
     private final String element;
     private final boolean isOpenTag;
-
+/*
     private static final Set<String> selfClosingTags = new HashSet<>(
 	    Arrays.asList("br"));
+  */  
+    private static final Set<String> selfClosingTags = new HashSet<String>(
+            Arrays.asList("!doctype", "!--", "?xml", "xml", "area", "base",
+                          "basefont", "br", "col", "frame", "hr", "img",
+                          "input", "link", "meta", "param"));
     
     public HtmlTag (String element, boolean isOpenTag) {
 	this.element = element;
