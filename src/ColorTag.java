@@ -23,18 +23,18 @@ public class ColorTag {
     }
     
     /**
-     * ColorTag partial copy constructor.
-     * 
-     * @param tag
-     * 		is a ColorTag that is our desired color for this ColorTag.
+     * ColorTag constructor. 
+     * @param color
+     * 		represents our desired color for this ColorTag.
+     * 		requires: color is a valid color.
      * @param index
      * 		represents the index of the location we want to insert the tag.
      * 
      * effects: Creates a new ColorTag object for the provided index that is 
-     * 		the same color as tag.
+     * 		the same color as the tag. 
      */
-    public ColorTag(ColorTag tag, int index) {
-	this.color = tag.getColor();
+    public ColorTag(String color, int index) {
+	this.color = color;
 	this.index = index;
     }
     

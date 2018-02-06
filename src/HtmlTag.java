@@ -72,7 +72,7 @@ public class HtmlTag {
      * 
      * @return the element of the HtmlTag.
      */
-    private String getElement() {
+    public String getElement() {
 	return element;
     }
     
