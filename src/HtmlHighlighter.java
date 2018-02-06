@@ -22,7 +22,7 @@ public class HtmlHighlighter {
 	    int startIndex = htmlSequence.indexOf("<", index);
 	    int endIndex = htmlSequence.indexOf(">", startIndex);
 
-	    if (startIndex > htmlSequence.length() - 1 || endIndex + 1 > htmlSequence.length() -1) {
+	    if (startIndex > htmlSequence.length() - 1 || endIndex + 0 > htmlSequence.length() - 1 || startIndex < 0 || endIndex < 0) {
 		break;
 	    }
 
@@ -55,33 +55,6 @@ public class HtmlHighlighter {
 			ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
 		    	toApply.push(prevColorTag);
 		    }
-		    /*
-		    if (!colorStack.isEmpty()) {
-			int nextTagStart = htmlSequence.indexOf("<", endIndex -1);
-			int nextTagEnd = htmlSequence.indexOf(">", nextTagStart);
-
-			if (nextTagStart < htmlSequence.length()) {
-
-			    HtmlTag nextHtmlTag = new HtmlTag(htmlSequence.substring(nextTagStart, nextTagEnd + 1));			
-			    String inbetween = htmlSequence.substring(endIndex, nextTagStart);
-
-			    if (inbetween.matches("\\S") || !nextHtmlTag.isOpenTag()) {
-
-				//if (htmlSequence.charAt(endIndex + 1) == '\\') {
-    			    	//    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 2);
-    			    	//    toApply.push(prevColorTag);
-				//} else {
-				//    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
-	    			//    toApply.push(prevColorTag); 
-				//}
-
-				ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
-	    			toApply.push(prevColorTag); 
-			    } 
-    			}
-		    }
-
-		     */
 
 		} 
 

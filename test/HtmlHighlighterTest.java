@@ -57,7 +57,7 @@ class HtmlHighlighterTest {
 		"       <img src=\"images/turtle.jpg\" width=\"100\" height=\"100\">\n" + 
 		"    </p>\n" + 
 		"  </body>\n" + 
-		"</html>";
+		"</html> ";
 	
 	System.out.println(HtmlHighlighter.highlightHtml(input3));
 

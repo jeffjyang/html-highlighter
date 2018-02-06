@@ -7,13 +7,14 @@ import java.nio.file.Paths;
 public class HighlighterMain {
 
     public static void main(String[] args) {
-	String inputFilePath = "input.html";
+	String inputFilePath = "input1.html";
 	
 	String inputFile = "";
 
+	System.out.println("Beginning highlighting");
+	
 	try {
 	    inputFile = new String(Files.readAllBytes(Paths.get(inputFilePath)));
-	    System.out.println(inputFile);
 	} catch (IOException e1) {
 	    e1.printStackTrace();
 	}
@@ -21,6 +22,7 @@ public class HighlighterMain {
 	if (!"".equals(inputFile)) {
 	    try(PrintWriter out = new PrintWriter("output.txt")){
 		out.println(HtmlHighlighter.highlightHtml(inputFile));
+		System.out.println("Done");
 		return;
 	    } catch (FileNotFoundException e) {
 		e.printStackTrace();
