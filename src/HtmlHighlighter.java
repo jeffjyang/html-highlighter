@@ -24,8 +24,8 @@ public class HtmlHighlighter {
     /**
      * Applies ColorTags (e.g. "\color[RED]") to an string containing an HTML file.
      * Most HTML tags will have a predefined color. If the method comes across a 
-     * HTML tag that does not have a defined color, a new "random" color will be generated
-     * and mapped to the HTML tag for the rest of the file.
+     * HTML tag that does not have a predefined color, a new "random" color will be 
+     * generated and mapped to the HTML tag for all future occurrences of the tag.
      * 
      * @param input
      * 		represents an HTML file.
@@ -34,14 +34,14 @@ public class HtmlHighlighter {
      */
     public static String highlightHtml(String input) {
 
-	
+	// stack containing unclosed HtmlTags
 	Stack<HtmlTag> htmlStack = new Stack<>();
 
+	// a stack of all the ColorTags we wish to apply on the HTML file 
 	Stack<ColorTag> toApply = new Stack<>();	
 
-
 	StringBuilder htmlSequence = new StringBuilder(input);
-	int index = 0;
+	int index = 0;	
 
 	// iterate through the entire input file 
 	while (index < htmlSequence.length()) {
@@ -56,6 +56,8 @@ public class HtmlHighlighter {
 
 	    HtmlTag htmlTag = new HtmlTag(htmlSequence.substring(startIndex, endIndex + 1));
 
+	    
+	    
 	    if (htmlTag.isSelfClosing()) {
 
 		ColorTag thisColorTag;

@@ -17,7 +17,9 @@ public class ColorTag {
      * 		different color than the previous ColorTag instantiated.
      */
     public ColorTag(int index) {
+	// this generates a "random" color
 	this.color = colors[colorSelector % colors.length];
+	
 	this.index = index;
 	colorSelector ++;
     }

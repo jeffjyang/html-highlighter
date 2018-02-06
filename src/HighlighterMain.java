@@ -7,11 +7,11 @@ import java.nio.file.Paths;
 public class HighlighterMain {
 
     public static void main(String[] args) {
-	String inputFilePath = "input1.html";
+	String inputFilePath = "input.html";
 	
 	String inputFile = "";
 
-	System.out.println("Beginning highlighting");
+	System.out.println("Beginning HTML highlighting");
 	
 	try {
 	    inputFile = new String(Files.readAllBytes(Paths.get(inputFilePath)));

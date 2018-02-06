@@ -43,8 +43,8 @@ public class HtmlTag {
 	    htmlTag = htmlTag.substring(1);
 	}
 	
-	this.element = htmlTag.split("\\s|\\/|>")[0];	// split the string at any whitespace, /, or >
-
+	// split the string at any whitespace, /, or >
+	this.element = htmlTag.split("\\s|\\/|>")[0];	
     }
     
 
