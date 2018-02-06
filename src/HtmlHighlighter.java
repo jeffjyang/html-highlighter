@@ -4,7 +4,18 @@ import java.util.Stack;
 
 public class HtmlHighlighter {
 
-
+    private static Map<String, String> htmlColors = new HashMap<>();
+    static {
+	htmlColors.put("html", "RED");
+	htmlColors.put("head", "YELLOW");
+	htmlColors.put("title", "GREEN");
+	htmlColors.put("body", "TURQUOISE");
+	htmlColors.put("br", "BLUE");
+	htmlColors.put("h1", "PURPLE");
+	htmlColors.put("p", "PINK");
+	htmlColors.put("a", "GRAY");
+    }
+    
 
     private HtmlHighlighter () {
 
@@ -12,8 +23,9 @@ public class HtmlHighlighter {
 
     /**
      * Applies ColorTags (e.g. "\color[RED]") to an string containing an HTML file.
-     * Any HTML tag will have the same color throughout the file, however colors
-     * of any HTML tag may differ across different inputs.
+     * Most HTML tags will have a predefined color. If the method comes across a 
+     * HTML tag that does not have a defined color, a new "random" color will be generated
+     * and mapped to the HTML tag for the rest of the file.
      * 
      * @param input
      * 		represents an HTML file.
@@ -22,7 +34,6 @@ public class HtmlHighlighter {
      */
     public static String highlightHtml(String input) {
 
-	Map<String, String> htmlColors = new HashMap<>();
 	
 	Stack<HtmlTag> htmlStack = new Stack<>();
 

@@ -1,7 +1,7 @@
 
 public class ColorTag {
     
-    private static final String[] colors = {"RED", "YELLOW", "GREEN", "TURQUOISE", "PINK", "DARKGREEN", "DARKGRAY"};
+    private static final String[] colors = {"DARKRED", "DARKYELLOW", "DARKGREEN", "DARKTURQUOISE", "DARKPINK", "DARKGREEN", "DARKGRAY"};
     private static int colorSelector = 0;
     private final String color;
     private final int index;	// index at which we want to apply the tag 

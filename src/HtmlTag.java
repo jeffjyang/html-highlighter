@@ -68,12 +68,12 @@ public class HtmlTag {
     }
     
     /**
-     * Gets the element of the HtmlTag.
+     * Gets the element of the HtmlTag in lower case.
      * 
-     * @return the element of the HtmlTag.
+     * @return the element of the HtmlTag in lower case.
      */
     public String getElement() {
-	return element;
+	return element.toLowerCase();
     }
     
     /**
