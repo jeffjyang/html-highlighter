@@ -9,6 +9,8 @@ class HtmlHighlighterTest {
     void setUp() throws Exception {
     }
 
+    
+    // some simple test inputs for manual verification of output
     @Test
     void test() {
 	String input = "<html>\n" + 
@@ -57,7 +59,7 @@ class HtmlHighlighterTest {
 		"       <img src=\"images/turtle.jpg\" width=\"100\" height=\"100\">\n" + 
 		"    </p>\n" + 
 		"  </body>\n" + 
-		"</html> ";
+		"</html>\n" ;
 	
 	System.out.println(HtmlHighlighter.highlightHtml(input3));
 
