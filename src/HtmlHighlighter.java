@@ -3,7 +3,7 @@ import java.util.Stack;
 public class HtmlHighlighter {
 
 
-    
+
     private HtmlHighlighter () {
 
     }
@@ -12,6 +12,7 @@ public class HtmlHighlighter {
 
 	Stack<HtmlTag> htmlStack = new Stack<>();
 	Stack<ColorTag> colorStack = new Stack<>();
+
 	Stack<ColorTag> toApply = new Stack<>();	
 
 
@@ -26,17 +27,18 @@ public class HtmlHighlighter {
 		break;
 	    }
 
-	    // TODO check out of bounds
 	    HtmlTag htmlTag = new HtmlTag(htmlSequence.substring(startIndex, endIndex + 1));
 
 
 	    if (htmlTag.isSelfClosing()) {
+
 		ColorTag thisColorTag = new ColorTag(startIndex);
 		toApply.push(thisColorTag);
 		if (!htmlStack.isEmpty()) {
 		    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
 		    toApply.push(prevColorTag);
 		} 
+
 	    } else if (htmlTag.isOpenTag()) {
 		ColorTag colorTag = new ColorTag(startIndex);
 		htmlStack.push(htmlTag);
@@ -50,36 +52,45 @@ public class HtmlHighlighter {
 		    // remove the stuff associated with this tag from the stack
 		    htmlStack.pop();
 		    colorStack.pop();
-		    
+
 		    if (!htmlStack.isEmpty()) {
-			ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
-		    	toApply.push(prevColorTag);
+			// if the next character is a new line, put the tag after the new line
+			if (htmlSequence.charAt(endIndex + 1) == '\n') {
+			    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 2);
+			    toApply.push(prevColorTag);			    
+			} else {
+			    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
+			    toApply.push(prevColorTag);
+			}
+
+
+
 		    }
 
 		} 
 
 	    }
-	    
-	    
-	    if (htmlTag.isSelfClosing() || !htmlTag.isOpenTag()) {
-		if (!colorStack.isEmpty()) {
-		    int nextTagStart = htmlSequence.indexOf("<", endIndex -1);
-		    int nextTagEnd = htmlSequence.indexOf(">", nextTagStart);
 
-		    if (nextTagStart < htmlSequence.length()) {
 
-			HtmlTag nextHtmlTag = new HtmlTag(htmlSequence.substring(nextTagStart, nextTagEnd + 1));			
-			String inbetween = htmlSequence.substring(endIndex, nextTagStart);
+	    if ((htmlTag.isSelfClosing() || !htmlTag.isOpenTag()) && !colorStack.isEmpty()) {
 
-			if (inbetween.matches("\\s") || nextHtmlTag.isOpenTag()) {
-			    toApply.pop();
-			} 
-		    }
+		int nextTagStart = htmlSequence.indexOf("<", endIndex -1);
+		int nextTagEnd = htmlSequence.indexOf(">", nextTagStart);
+
+		if (nextTagStart < htmlSequence.length() || nextTagEnd <= htmlSequence.length() || nextTagStart > -1 || nextTagEnd > -1) {
+
+		    HtmlTag nextHtmlTag = new HtmlTag(htmlSequence.substring(nextTagStart, nextTagEnd + 1));			
+		    String inbetween = htmlSequence.substring(endIndex, nextTagStart);
+
+		    if (inbetween.matches("\\s") || nextHtmlTag.isOpenTag()) {
+			toApply.pop();
+		    } 
 		}
+
 	    }
-	    
+
 	    index = endIndex;
-	
+
 	}
 
 	while (!toApply.isEmpty()) {
