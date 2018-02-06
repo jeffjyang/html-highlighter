@@ -10,6 +10,16 @@ public class HtmlHighlighter {
 
     }
 
+    /**
+     * Applies ColorTags (e.g. "\color[RED]") to an string containing an HTML file.
+     * Any HTML tag will have the same color throughout the file, however colors
+     * of any HTML tag may differ across different inputs.
+     * 
+     * @param input
+     * 		represents an HTML file.
+     * 		requires: input to represent a valid HTML file.
+     * @return: a string representing an HTML file after the ColorTags have been applied. 
+     */
     public static String highlightHtml(String input) {
 
 	Map<String, String> htmlColors = new HashMap<>();
@@ -22,36 +32,37 @@ public class HtmlHighlighter {
 	StringBuilder htmlSequence = new StringBuilder(input);
 	int index = 0;
 
+	// iterate through the entire input file 
 	while (index < htmlSequence.length()) {
+	
 	    int startIndex = htmlSequence.indexOf("<", index);
 	    int endIndex = htmlSequence.indexOf(">", startIndex);
 
+	    // error checking 
 	    if (startIndex > htmlSequence.length() - 1 || endIndex + 0 > htmlSequence.length() - 1 || startIndex < 0 || endIndex < 0) {
 		break;
 	    }
 
 	    HtmlTag htmlTag = new HtmlTag(htmlSequence.substring(startIndex, endIndex + 1));
 
-
 	    if (htmlTag.isSelfClosing()) {
 
 		ColorTag thisColorTag;
 		if (htmlColors.containsKey(htmlTag.getElement())) {
 		    thisColorTag = new ColorTag(htmlColors.get(htmlTag.getElement()), startIndex);
-		}else {
+		} else {
 		    thisColorTag = new ColorTag(startIndex);
 		    htmlColors.put(htmlTag.getElement(), thisColorTag.getColor());
-		}
-			
+		}	
 		toApply.push(thisColorTag);
-		if (!htmlStack.isEmpty()) {
-	
+		
+		// Switch back to the previous color after this tag 
+		if (!htmlStack.isEmpty()) {	
 		    ColorTag prevColorTag = new ColorTag(htmlColors.get(htmlStack.peek().getElement()), endIndex + 1);
 		    toApply.push(prevColorTag);
 		} 
 
 	    } else if (htmlTag.isOpenTag()) {
-		
 		
 		ColorTag colorTag; 
 		htmlStack.push(htmlTag);
@@ -64,26 +75,29 @@ public class HtmlHighlighter {
 		}
 		
 		toApply.add(colorTag);
+	    
 	    } else {
-		// closing tag matches most recent open tag
+	
+		// if we have a closing tag without a matching opening tag, throw an error 
+		// TODO omit since requirement input is valid? 
 		if (htmlStack.isEmpty()) {
 		    System.out.println("err");
-		} else if (htmlStack.peek().matches(htmlTag)) {
-		    // remove the stuff associated with this tag from the stack
+		} else {
+
+		    // remove the corresponding opening tag from htmlStack 
 		    htmlStack.pop();
 
+		    // if we still have an unclosed tag, switch back to the previous color 
 		    if (!htmlStack.isEmpty()) {
-			// if the next character is a new line, put the tag after the new line
+			
+			// if the next character is a new line, put the ColorTag after the new line
 			if (htmlSequence.charAt(endIndex + 1) == '\n') {
 			    ColorTag prevColorTag = new ColorTag (htmlColors.get(htmlStack.peek().getElement()), endIndex + 2);
-				
 			    toApply.push(prevColorTag);			    
 			} else {
 			    ColorTag prevColorTag = new ColorTag (htmlColors.get(htmlStack.peek().getElement()), endIndex + 1);
 			    toApply.push(prevColorTag);
 			}
-
-
 
 		    }
 
@@ -92,6 +106,8 @@ public class HtmlHighlighter {
 	    }
 
 
+	    // If this ColorTag would be immediately overwritten by the very next 
+	    // ColorTag, do not apply it to the output 
 	    if ((htmlTag.isSelfClosing() || !htmlTag.isOpenTag()) && !htmlStack.isEmpty()) {
 
 		int nextTagStart = htmlSequence.indexOf("<", endIndex -1);
@@ -113,6 +129,7 @@ public class HtmlHighlighter {
 
 	}
 
+	// Apply all the ColorTags to the output file 
 	while (!toApply.isEmpty()) {
 	    htmlSequence.insert(toApply.peek().getIndex(), toApply.pop().toString());
 	}
@@ -120,7 +137,6 @@ public class HtmlHighlighter {
 	return htmlSequence.toString();
 
     }
-
 
 
 }
