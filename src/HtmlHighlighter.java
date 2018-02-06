@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class HtmlHighlighter {
@@ -10,8 +12,9 @@ public class HtmlHighlighter {
 
     public static String highlightHtml(String input) {
 
+	Map<String, String> htmlColors = new HashMap<>();
+	
 	Stack<HtmlTag> htmlStack = new Stack<>();
-	Stack<ColorTag> colorStack = new Stack<>();
 
 	Stack<ColorTag> toApply = new Stack<>();	
 
@@ -32,17 +35,34 @@ public class HtmlHighlighter {
 
 	    if (htmlTag.isSelfClosing()) {
 
-		ColorTag thisColorTag = new ColorTag(startIndex);
+		ColorTag thisColorTag;
+		if (htmlColors.containsKey(htmlTag.getElement())) {
+		    thisColorTag = new ColorTag(htmlColors.get(htmlTag.getElement()), startIndex);
+		}else {
+		    thisColorTag = new ColorTag(startIndex);
+		    htmlColors.put(htmlTag.getElement(), thisColorTag.getColor());
+		}
+			
 		toApply.push(thisColorTag);
 		if (!htmlStack.isEmpty()) {
-		    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
+	
+		    ColorTag prevColorTag = new ColorTag(htmlColors.get(htmlStack.peek().getElement()), endIndex + 1);
 		    toApply.push(prevColorTag);
 		} 
 
 	    } else if (htmlTag.isOpenTag()) {
-		ColorTag colorTag = new ColorTag(startIndex);
+		
+		
+		ColorTag colorTag; 
 		htmlStack.push(htmlTag);
-		colorStack.push(colorTag);
+		
+		if (htmlColors.containsKey(htmlTag.getElement())) {
+		    colorTag = new ColorTag(htmlColors.get(htmlTag.getElement()), startIndex);
+		} else {
+		    colorTag = new ColorTag(startIndex);
+		    htmlColors.put(htmlTag.getElement(), colorTag.getColor());
+		}
+		
 		toApply.add(colorTag);
 	    } else {
 		// closing tag matches most recent open tag
@@ -51,15 +71,15 @@ public class HtmlHighlighter {
 		} else if (htmlStack.peek().matches(htmlTag)) {
 		    // remove the stuff associated with this tag from the stack
 		    htmlStack.pop();
-		    colorStack.pop();
 
 		    if (!htmlStack.isEmpty()) {
 			// if the next character is a new line, put the tag after the new line
 			if (htmlSequence.charAt(endIndex + 1) == '\n') {
-			    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 2);
+			    ColorTag prevColorTag = new ColorTag (htmlColors.get(htmlStack.peek().getElement()), endIndex + 2);
+				
 			    toApply.push(prevColorTag);			    
 			} else {
-			    ColorTag prevColorTag = new ColorTag(colorStack.peek(), endIndex + 1);
+			    ColorTag prevColorTag = new ColorTag (htmlColors.get(htmlStack.peek().getElement()), endIndex + 1);
 			    toApply.push(prevColorTag);
 			}
 
@@ -72,7 +92,7 @@ public class HtmlHighlighter {
 	    }
 
 
-	    if ((htmlTag.isSelfClosing() || !htmlTag.isOpenTag()) && !colorStack.isEmpty()) {
+	    if ((htmlTag.isSelfClosing() || !htmlTag.isOpenTag()) && !htmlStack.isEmpty()) {
 
 		int nextTagStart = htmlSequence.indexOf("<", endIndex -1);
 		int nextTagEnd = htmlSequence.indexOf(">", nextTagStart);
