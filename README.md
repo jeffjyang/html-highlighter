@@ -46,5 +46,6 @@ method located in `src/HighlighterMain.java`.
 
 - Input file is a valid HTML file
 - Input HTML file does not contain any comments
+- Input file does not contain any '<' or '>' that are not part of an HTML tag
 - Input file is `input.html`
 - Output file is `output.txt`
